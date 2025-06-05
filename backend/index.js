@@ -4,12 +4,14 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 const postRoute = require('./routes/post/postroute');
+const adminroute = require('./routes/admin/adminroute');
 
 app.use(cors());
 app.use(bodyParser.json());
 
 // Routes
 app.use('/api/post', postRoute);
+app.use('/api/admin', adminroute);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

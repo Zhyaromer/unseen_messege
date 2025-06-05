@@ -11,7 +11,7 @@ export default function Main_Card({ id, name, message, videoTitle, videoThumbnai
 
     const handleYTClick = (e) => {
         e.stopPropagation();
-        window.open(videoUrl, '_blank'); 
+        window.open(videoUrl, '_blank');
     }
 
     return (
@@ -32,18 +32,30 @@ export default function Main_Card({ id, name, message, videoTitle, videoThumbnai
                     </div>
                 </div>
 
-                <div 
+                <div
                     data-yt-section
-                    onClick={handleYTClick} 
-                    dir="rtl" 
+                    onClick={handleYTClick}
+                    dir="rtl"
                     className={`${!isAvailable ? 'hidden' : ''} ${videoUrl ? 'cursor-pointer' : ''}`}
                 >
-                    <div className="flex justify-right gap-2 items-center px-3 py-2 bg-white">
-                        <div>
-                            <img className="w-12 h-12 rounded-full" src={videoThumbnail} alt="" />
-                        </div>
-                        <div dir="rtl" className="text-gray-500 text-sm text-start">
-                            <span>{videoTitle}</span>
+                    <div >
+                        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                            <img
+                                className="w-16 h-12 rounded object-cover"
+                                src={videoThumbnail}
+                                alt="Video thumbnail"
+                            />
+                            <div>
+                                <p className="text-sm font-medium text-gray-900">{videoTitle}</p>
+                                <a
+                                    href={videoUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-xs text-blue-600 hover:text-blue-800"
+                                >
+                                    بینینی ڤیدیۆ
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

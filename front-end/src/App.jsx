@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import SendMessege from './pages/SendMessege';
 import About from './pages/About';
 import GetPostByID from './pages/GetPostbyID';
-import Admin from './pages/Admin';
+import AdminPage from './pages/AdminPage';
 
 function App() {
   return (
@@ -14,6 +14,7 @@ function App() {
         <Route path="/send-message" element={<SendMessege />} />
         <Route path="/about" element={<About />} />
         <Route path="/messege/:id" element={<GetPostByID />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </Router>
   )

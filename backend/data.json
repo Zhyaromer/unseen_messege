@@ -23,7 +23,7 @@
     "message": "پێشبڕکێیەکی وەرزشی لە هەولێر",
     "date": "2023-10-03 14:00",
     "link": "https://sports.krd/erbil",
-    "hasapproved": false,
+    "hasapproved": true,
     "bg_color": "#90CAF9"
   },
   {
@@ -50,7 +50,7 @@
     "message": "وێنەیەکی نوێی هونەرمەند عەلی",
     "date": "2023-10-06 16:30",
     "link": "https://art.krd/ali",
-    "hasapproved": false,
+    "hasapproved": true,
     "bg_color": "#2196F3"
   },
   {
@@ -68,7 +68,7 @@
     "message": "کافەیەکی نوێ لە ناوەندی شاری کرێ",
     "date": "2023-10-08 12:15",
     "link": "",
-    "hasapproved": false,
+    "hasapproved": true,
     "bg_color": "#1976D2"
   },
   {
@@ -95,7 +95,7 @@
     "message": "ئۆفەرێکی کار لە کۆمپانیای زانگۆ",
     "date": "2023-10-11 09:10",
     "link": "https://jobs.krd/zango",
-    "hasapproved": false,
+    "hasapproved": true,
     "bg_color": "#FFF8E1"
   },
   {

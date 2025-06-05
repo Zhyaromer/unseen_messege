@@ -25,7 +25,7 @@ export default function GetPostByID() {
                 }
                 setMessage(response.data[0]);
             } catch (error) {
-                console.error('Error fetching message:', error);
+                alert('Failed to fetch message');
             }
         };
 

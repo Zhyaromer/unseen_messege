@@ -28,12 +28,13 @@ export default function SendMessage() {
                 alert("تکایە بەستەری یوتیوبی دروست بنووسە");
                 return;
             }
-            console.log("Sending message...2");
+            
             if (musicLink && !musicLink.startsWith("https://")) {
                 alert("تکایە بەستەری یوتیوبی بە شێوەی دروست بنووسە (https://...)");
                 return;
             }
-            if (name.length > 20 || message.length > 120) {
+
+            if (name.length > 20 || message.length > 190) {
                 alert("ناو یان پەیامەکە زۆر درێژە، تکایە کەمتر بنووسە");
                 return;
             }
@@ -55,7 +56,6 @@ export default function SendMessage() {
                     setSelectedColor("#4d2d2d");
                 }
             } catch (error) {
-                console.error("Error sending message:", error);
                 alert("هەڵەیەک ڕوویدا، تکایە دووبارە هەوڵ بدە");
             }
         } else {
@@ -77,7 +77,7 @@ export default function SendMessage() {
                 </h1>
 
                 <div dir="rtl">
-                    <div className="md:w-96 h-96 border-4 border-black text-lg flex flex-col">
+                    <div className="md:w-96 h-[450px] border-4 border-black text-lg flex flex-col">
                         <div className="flex justify-between items-center px-3 py-0 bg-white">
                             <div className="flex items-center gap-2">
                                 <span className="font-bold">بۆ : </span>
@@ -101,7 +101,7 @@ export default function SendMessage() {
                                 <textarea
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
-                                    maxLength={120}
+                                    maxLength={190}
                                     placeholder="پەیامەکەت لێرە بنووسە..."
                                     className="text-black font-semibold w-full h-full bg-transparent border-none outline-none resize-none placeholder-gray-400"
                                     dir="rtl"

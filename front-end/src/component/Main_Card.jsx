@@ -16,7 +16,7 @@ export default function Main_Card({ id, name, message, videoTitle, videoThumbnai
 
     return (
         <div dir="rtl" onClick={handleCardClick}>
-            <div className="md:w-96 h-96 border-4 border-black text-lg flex flex-col">
+            <div className="md:w-96 h-[470px] border-4 border-black text-lg flex flex-col">
                 <div className="flex justify-between items-center px-3 py-0 bg-white">
                     <div className="flex items-center gap-2">
                         <span className="font-bold">بۆ : {name}</span>

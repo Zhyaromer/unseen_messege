@@ -1,12 +1,6 @@
-const fs = require('fs').promises;
-const path = require('path');
+const db = require('../../db'); 
 const xss = require('xss');
 const axios = require('axios');
-
-const filePath = path.join(__dirname, '../../data.json');
-
-let writeInProgress = false;
-const writeQueue = [];
 
 function extractYouTubeId(url) {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -32,28 +26,6 @@ async function getYouTubeVideoInfo(videoId) {
   }
 }
 
-const enqueueWrite = async (operation) => {
-    return new Promise((resolve, reject) => {
-        writeQueue.push({ operation, resolve, reject });
-        processQueue();
-    });
-};
-
-const processQueue = async () => {
-    if (writeInProgress || writeQueue.length === 0) return;
-    writeInProgress = true;
-    const { operation, resolve, reject } = writeQueue.shift();
-    try {
-        const result = await operation();
-        resolve(result);
-    } catch (err) {
-        reject(err);
-    } finally {
-        writeInProgress = false;
-        processQueue();
-    }
-};
-
 const add_post = async (req, res) => {
     const { name, message, link, color } = req.body;
 
@@ -65,7 +37,7 @@ const add_post = async (req, res) => {
         return res.status(400).json({ message: 'Invalid input type' });
     }
 
-    if (name.length > 20 || message.length > 120) {
+    if (name.length > 20 || message.length > 190) {
         return res.status(400).json({ message: 'Input exceeds maximum length' });
     }
 
@@ -110,23 +82,32 @@ const add_post = async (req, res) => {
         link: link ? xss(link.trim()) : '',
         date: new Date().toISOString(),
         color: color.trim(),
-        hasapproved: false,
+        hasapproved: 0, 
         videoTitle, 
         videoThumbnail 
     };
 
     try {
-        await enqueueWrite(async () => {
-            let posts = [];
-            try {
-                const data = await fs.readFile(filePath, 'utf8');
-                posts = JSON.parse(data);
-            } catch (err) {
-                if (err.code !== 'ENOENT') throw err;
-            }
-
-            posts.push(newPost);
-            await fs.writeFile(filePath, JSON.stringify(posts, null, 2), 'utf8');
+        await new Promise((resolve, reject) => {
+            db.run(
+                `INSERT INTO posts (id, name, message, link, date, color, hasapproved, videoTitle, videoThumbnail)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    newPost.id,
+                    newPost.name,
+                    newPost.message,
+                    newPost.link,
+                    newPost.date,
+                    newPost.color,
+                    newPost.hasapproved,
+                    newPost.videoTitle,
+                    newPost.videoThumbnail
+                ],
+                function(err) {
+                    if (err) return reject(err);
+                    resolve();
+                }
+            );
         });
 
         res.status(201).json({ 
@@ -134,7 +115,7 @@ const add_post = async (req, res) => {
             post: newPost 
         });
     } catch (err) {
-        console.error('Error writing to file:', err);
+        console.error('Error writing to database:', err);
         res.status(500).json({ message: 'Failed to save post' });
     }
 };

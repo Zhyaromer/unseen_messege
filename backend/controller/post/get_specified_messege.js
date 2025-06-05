@@ -1,8 +1,7 @@
-const fs = require('fs').promises;
-const path = require('path');
+const db = require('../../db'); 
 const xss = require('xss');
 
-const get_specified_messege = async (req, res) => {
+const get_specified_message = async (req, res) => {
     const { id } = req.query;
 
     if (!id) {
@@ -12,36 +11,30 @@ const get_specified_messege = async (req, res) => {
     const sanitizedId = xss(id);
 
     try {
-        const filePath = path.join(__dirname, '../../data.json');
-        const data = await fs.readFile(filePath, 'utf-8');
-        const posts = JSON.parse(data);
+        const post = await new Promise((resolve, reject) => {
+            db.get(
+                `SELECT id, name, message, link, date, color, hasapproved, videoTitle, videoThumbnail
+                 FROM posts 
+                 WHERE id = ? AND hasapproved = 1`,
+                [sanitizedId],
+                (err, row) => {
+                    if (err) return reject(err);
+                    resolve(row);
+                }
+            );
+        });
 
-        if (!Array.isArray(posts)) {
-            return res.status(500).json({ message: 'Data format error' });
+        if (!post) {
+            return res.status(404).json({ message: 'No approved post found with the specified ID' });
         }
 
-        if (posts.length === 0) {
-            return res.status(404).json({ message: 'No posts found' });
-        }
+        post.hasapproved = Boolean(post.hasapproved);
 
-        posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        const approvedPost = posts.filter(post => post.hasapproved === true);
-
-        if (approvedPost.length === 0) {
-            return res.status(404).json({ message: 'No posts found' });
-        }
-
-        const specifiedPosts = approvedPost.filter(post => post.id == sanitizedId);
-
-        if (specifiedPosts.length === 0) {
-            return res.status(404).json({ message: 'No posts found with the specified ID' });
-        }
-
-        res.status(200).json(specifiedPosts);
+        res.status(200).json(post);
     } catch (error) {
+        console.error('Error fetching specified post:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
 
-module.exports = get_specified_messege; 
+module.exports = get_specified_message;

@@ -1,37 +1,36 @@
-const fs = require('fs').promises;
-const path = require('path');
+const db = require('../../db'); 
 
 const get_all_posts = async (req, res) => {
   try {
-    const filePath = path.join(__dirname, '../../data.json'); 
-    const data = await fs.readFile(filePath, 'utf-8');
-    const posts = JSON.parse(data);
+    const approvedPosts = await new Promise((resolve, reject) => {
+      db.all(
+        `SELECT id, name, message, link, date, color, hasapproved, videoTitle, videoThumbnail
+         FROM posts 
+         WHERE hasapproved = 1
+         ORDER BY date DESC`,
+        [],
+        (err, rows) => {
+          if (err) return reject(err);
+          resolve(rows);
+        }
+      );
+    });
 
-    if (!Array.isArray(posts)) {
-      return res.status(500).json({ message: 'Data format error' });
+    if (!approvedPosts || approvedPosts.length === 0) {
+      return res.status(404).json({ message: 'No approved posts found' });
     }
 
-    if (posts.length === 0) {
-      return res.status(404).json({ message: 'No posts found' });
-    }
-
-    posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    const approvedPost = posts.filter(post => post.hasapproved === true);
-
-    if (approvedPost.length === 0) {
-      return res.status(404).json({ message: 'No posts found' });
-    }
-
-    const postData = approvedPost.map(post => {
+    const postData = approvedPosts.map(post => {
       return {
         id: post.id,
         name: post.name,
         message: post.message,
-        hasapproved: post.hasapproved,
-        link : post.link,
-        videoTitle : post.videoTitle || null,
-        videoThumbnail : post.videoThumbnail || null
+        hasapproved: Boolean(post.hasapproved), 
+        link: post.link,
+        date: post.date,
+        color: post.color,
+        videoTitle: post.videoTitle || null,
+        videoThumbnail: post.videoThumbnail || null
       };
     });
 

@@ -19,10 +19,10 @@ export default function Home() {
                 if (Array.isArray(data)) {
                     setMessages(data);
                 } else {
-                    console.error('Unexpected data format:', data);
+                    alert('Unexpected data format');
                 }
             } catch (error) {
-                console.error('Error fetching messages:', error);
+                alert('Failed to fetch messages');
             } finally {
                 setIsLoading(false);
             }
@@ -34,6 +34,14 @@ export default function Home() {
     const filteredMessages = messages.filter(message =>
         message.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-pink-50/50 to-rose-50/50">
+                <div className="text-pink-600 text-2xl font-bold">چاوەڕوانبە...</div>
+            </div>
+        );
+    }
 
     return (
         <div dir='rtl' className="min-h-screen bg-gradient-to-b from-pink-50/50 to-rose-50/50">

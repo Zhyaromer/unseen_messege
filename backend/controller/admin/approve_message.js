@@ -1,7 +1,5 @@
-const fs = require('fs').promises;
-const path = require('path');
+const db = require('../../db'); 
 const xss = require('xss');
-const lockfile = require('proper-lockfile');
 
 const approve_message = async (req, res) => {
     const { id } = req.params;
@@ -11,58 +9,61 @@ const approve_message = async (req, res) => {
     }
 
     const sanitizedId = xss(id);
-    const filePath = path.join(__dirname, '../../data.json');
-    let release;
 
     try {
-        release = await lockfile.lock(filePath, {
-            retries: {
-                retries: 5,
-                factor: 2,
-                minTimeout: 1000,
-                maxTimeout: 5000
-            }
+        const postExists = await new Promise((resolve, reject) => {
+            db.get(
+                'SELECT id FROM posts WHERE id = ?',
+                [sanitizedId],
+                (err, row) => {
+                    if (err) return reject(err);
+                    resolve(!!row);
+                }
+            );
         });
-        
-        const data = await fs.readFile(filePath, 'utf-8');
-        const posts = JSON.parse(data);
 
-        const postIndex = posts.findIndex(post => post.id == sanitizedId);
-        if (postIndex === -1) {
-            await release().catch(err => console.error('Error releasing lock:', err));
+        if (!postExists) {
             return res.status(404).json({ message: 'Post not found' });
         }
 
-        const updatedPost = {
-            ...posts[postIndex],
-            hasapproved: true
-        };
-        posts[postIndex] = updatedPost;
+        const result = await new Promise((resolve, reject) => {
+            db.run(
+                'UPDATE posts SET hasapproved = 1 WHERE id = ?',
+                [sanitizedId],
+                function(err) {
+                    if (err) return reject(err);
+                    resolve(this.changes); 
+                }
+            );
+        });
 
-        await fs.writeFile(filePath, JSON.stringify(posts, null, 2), 'utf-8');
-        
-        await release().catch(err => console.error('Error releasing lock:', err));
+        if (result === 0) {
+            return res.status(404).json({ message: 'Post not found or already approved' });
+        }
+
+        const updatedPost = await new Promise((resolve, reject) => {
+            db.get(
+                `SELECT id, name, message, link, date, color, hasapproved, videoTitle, videoThumbnail
+                 FROM posts WHERE id = ?`,
+                [sanitizedId],
+                (err, row) => {
+                    if (err) return reject(err);
+                    resolve(row);
+                }
+            );
+        });
+
+        updatedPost.hasapproved = Boolean(updatedPost.hasapproved);
 
         return res.status(200).json({ 
             message: 'Post approved successfully', 
             post: updatedPost 
         });
-    } catch (error) {
-        if (release) {
-            try {
-                await release().catch(err => console.error('Error releasing lock:', err));
-            } catch (unlockError) {
-                console.error('Error releasing lock:', unlockError);
-            }
-        }
 
+    } catch (error) {
         console.error('Error approving post:', error);
         
-        if (error.code === 'ENOENT') {
-            return res.status(404).json({ message: 'Data file not found' });
-        }
-        
-        if (error.code === 'ELOCKED' || error.code === 'EBUSY') {
+        if (error.code === 'SQLITE_BUSY') {
             return res.status(429).json({ message: 'System busy, please try again later' });
         }
 

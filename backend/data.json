@@ -1,10 +1,191 @@
 [
   {
     "id": 1,
-    "name": "First Post",
-    "message": "This is the first post",
-    "date": "2023-10-01",
-    "link" : "https://youtu.be/T9g-v-6eDNA?si=gEfTlfVthc_-2a4K",
+    "name": "پۆست یەکەم",
+    "message": "بەخێربێن بۆ پەڕەی فەیسبووک",
+    "date": "2023-10-01 08:15",
+    "link": "",
+    "hasapproved": true,
+    "bg_color": "#E3F2FD"
+  },
+  {
+    "id": 2,
+    "name": "دووەم پۆست",
+    "message": "ئەمڕۆ ڕۆژێکی باراناویە",
+    "date": "2023-10-02 09:30",
+    "link": "https://weather.krd",
+    "hasapproved": true,
+    "bg_color": "#BBDEFB"
+  },
+  {
+    "id": 3,
+    "name": "هەواڵی ڕۆژ",
+    "message": "پێشبڕکێیەکی وەرزشی لە هەولێر",
+    "date": "2023-10-03 14:00",
+    "link": "https://sports.krd/erbil",
+    "hasapproved": false,
+    "bg_color": "#90CAF9"
+  },
+  {
+    "id": 4,
+    "name": "بابەتی پەروەردە",
+    "message": "کۆرسێکی نوێ بۆ زمانەوانی دەستپێدەکات",
+    "date": "2023-10-04 10:45",
+    "link": "https://edu.krd/courses",
+    "hasapproved": true,
+    "bg_color": "#64B5F6"
+  },
+  {
+    "id": 5,
+    "name": "ڕێنمایی تەندروستی",
+    "message": "چۆن تەندروست بمێنینەوە لە زستاندا",
+    "date": "2023-10-05 11:20",
+    "link": "https://health.krd/winter",
+    "hasapproved": true,
+    "bg_color": "#42A5F5"
+  },
+  {
+    "id": 6,
+    "name": "بەرهەمی هونەری",
+    "message": "وێنەیەکی نوێی هونەرمەند عەلی",
+    "date": "2023-10-06 16:30",
+    "link": "https://art.krd/ali",
+    "hasapproved": false,
+    "bg_color": "#2196F3"
+  },
+  {
+    "id": 7,
+    "name": "ئاگاداری",
+    "message": "ڕێگای سەرەکی سنور بەستراویە",
+    "date": "2023-10-07 07:00",
+    "link": "https://traffic.krd/alerts",
+    "hasapproved": true,
+    "bg_color": "#1E88E5"
+  },
+  {
+    "id": 8,
+    "name": "پێشکەشکارێکی نوێ",
+    "message": "کافەیەکی نوێ لە ناوەندی شاری کرێ",
+    "date": "2023-10-08 12:15",
+    "link": "",
+    "hasapproved": false,
+    "bg_color": "#1976D2"
+  },
+  {
+    "id": 9,
+    "name": "بۆنەوەی کتێب",
+    "message": "کتێبی 'دەنگێ لە گوڵێ' بڵاوکرایەوە",
+    "date": "2023-10-09 18:45",
+    "link": "https://books.krd/new",
+    "hasapproved": true,
+    "bg_color": "#1565C0"
+  },
+  {
+    "id": 10,
+    "name": "فێرکاری",
+    "message": "فێرکاری ئینگلیزی لە یوتیوب",
+    "date": "2023-10-10 20:00",
+    "link": "https://youtu.be/english123",
+    "hasapproved": true,
+    "bg_color": "#0D47A1"
+  },
+  {
+    "id": 11,
+    "name": "بوارەکانی کار",
+    "message": "ئۆفەرێکی کار لە کۆمپانیای زانگۆ",
+    "date": "2023-10-11 09:10",
+    "link": "https://jobs.krd/zango",
+    "hasapproved": false,
+    "bg_color": "#FFF8E1"
+  },
+  {
+    "id": 12,
+    "name": "بەرواری کۆنسێرت",
+    "message": "کۆنسێرتی هونەرمەند حەسەن لە سلێمانی",
+    "date": "2023-10-12 19:30",
+    "link": "https://events.krd/hasan",
+    "hasapproved": true,
+    "bg_color": "#FFECB3"
+  },
+  {
+    "id": 13,
+    "name": "پێداچوونەوەی فیلم",
+    "message": "پێداچوونەوەی فیلمی 'کۆیەکی'",
+    "date": "2023-10-13 21:00",
+    "link": "https://cinema.krd/review",
+    "hasapproved": true,
+    "bg_color": "#FFE082"
+  },
+  {
+    "id": 14,
+    "name": "ئامۆژگاری دارایی",
+    "message": "چۆن بودجەمان ڕێکبخەین",
+    "date": "2023-10-14 13:25",
+    "link": "",
+    "hasapproved": false,
+    "bg_color": "#FFD54F"
+  },
+  {
+    "id": 15,
+    "name": "بەرنامەی تەلەفزیۆنی",
+    "message": "بەرنامەی نوێی 'گفتوگۆ' لە کەناڵی کوردستان",
+    "date": "2023-10-15 17:40",
+    "link": "https://tv.krd/kurdistan",
+    "hasapproved": true,
+    "bg_color": "#FFCA28"
+  },
+  {
+    "id": 16,
+    "name": "ئاگاداری بەرەبەیان",
+    "message": "پیش بینی باران و بەفر بۆ 3 ڕۆژی داهاتوو",
+    "date": "2023-10-16 06:50",
+    "link": "https://weather.krd/alerts",
+    "hasapproved": true,
+    "bg_color": "#FFC107"
+  },
+  {
+    "id": 17,
+    "name": "کۆنفرانس",
+    "message": "کۆنفرانسی زانستی لە زانکۆی سەلاحەدین",
+    "date": "2023-10-17 10:00",
+    "link": "https://conference.edu/su",
+    "hasapproved": false,
+    "bg_color": "#E8F5E9"
+  },
+  {
+    "id": 18,
+    "name": "پێشبڕکێی وێنەکێشان",
+    "message": "مەرجنامەی پێشبڕکێی ساڵانە",
+    "date": "2023-10-18 15:15",
+    "link": "https://art.krd/competition",
+    "hasapproved": true,
+    "bg_color": "#C8E6C9"
+  },
+  {
+    "id": 19,
+    "name": "نوێکاری تەکنۆلۆژیا",
+    "message": "مۆبایلێکی نوێی سامسۆنگ بڵاوکرایەوە",
+    "date": "2023-10-19 11:30",
+    "link": "https://tech.krd/samsung",
+    "hasapproved": true,
+    "bg_color": "#A5D6A7"
+  },
+  {
+    "id": 20,
+    "name": "ئاهەنگی نەورۆز",
+    "message": "ئامادەکاری بۆ ئاهەنگی نەورۆز لە هەولێر",
+    "date": "2023-10-20 20:45",
+    "link": "https://events.krd/newroz",
+    "hasapproved": false,
+    "bg_color": "#81C784"
+  },
+  {
+    "id": "1749154760326fc981b044an",
+    "name": "ژیار",
+    "message": "بەخێربێن بۆ پەڕەی فەیسبووک",
+    "link": "",
+    "date": "2025-06-05T20:19:20.326Z",
+    "color": "#4d2d2d",
     "hasapproved": false
   }
 ]

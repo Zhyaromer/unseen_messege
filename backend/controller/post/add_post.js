@@ -2,8 +2,37 @@ const fs = require('fs').promises;
 const path = require('path');
 const xss = require('xss');
 
+const filePath = path.join(__dirname, '../../data.json');
+
+let writeInProgress = false;
+const writeQueue = [];
+
+const enqueueWrite = async (operation) => {
+    return new Promise((resolve, reject) => {
+        writeQueue.push({ operation, resolve, reject });
+        processQueue();
+    });
+};
+
+const processQueue = async () => {
+    if (writeInProgress || writeQueue.length === 0) return;
+
+    writeInProgress = true;
+    const { operation, resolve, reject } = writeQueue.shift();
+
+    try {
+        const result = await operation();
+        resolve(result);
+    } catch (err) {
+        reject(err);
+    } finally {
+        writeInProgress = false;
+        processQueue();
+    }
+};
+
 const add_post = async (req, res) => {
-    const { name, message, link , color } = req.body;
+    const { name, message, link, color } = req.body;
 
     if (!name || !message || !color) {
         return res.status(400).json({ message: 'All fields are required' });
@@ -17,27 +46,27 @@ const add_post = async (req, res) => {
         return res.status(400).json({ message: 'Input exceeds maximum length' });
     }
 
-    // const colors = [
-    //     "#4d2d2d", "#3e5f3a", "#2766b5", "#3e29a6", "#c1612a",
-    //     "#020006", "#d3cfd5", "#54502f", "#2b1a1a", "#2f4a2d",
-    //     "#1f4a91", "#2f1a91", "#a34f1f", "#1a0004", "#c9c6cc",
-    //     "#444127", "#5a3b3b", "#486b48", "#2b6cc2", "#4933c2",
-    //     "#c96f2f", "#1a0a1f", "#f0ecf3", "#6c6834", "#3a1f1f",
-    //     "#2f3d2f", "#1a2f6b", "#2f1a6b", "#f472b6", "#ec4899",
-    //     "#db2777", "#c084fc", "#a855f7", "#9333ea", "#fb923c",
-    //     "#f97316", "#ea580c", "#fde047", "#facc15", "#eab308"
-    // ];
+    const colors = [
+        "#4d2d2d", "#3e5f3a", "#2766b5", "#3e29a6", "#c1612a",
+        "#020006", "#d3cfd5", "#54502f", "#2b1a1a", "#2f4a2d",
+        "#1f4a91", "#2f1a91", "#a34f1f", "#1a0004", "#c9c6cc",
+        "#444127", "#5a3b3b", "#486b48", "#2b6cc2", "#4933c2",
+        "#c96f2f", "#1a0a1f", "#f0ecf3", "#6c6834", "#3a1f1f",
+        "#2f3d2f", "#1a2f6b", "#2f1a6b", "#f472b6", "#ec4899",
+        "#db2777", "#c084fc", "#a855f7", "#9333ea", "#fb923c",
+        "#f97316", "#ea580c", "#fde047", "#facc15", "#eab308"
+    ];
 
-    // if (!colors.includes(color)) {
-    //     return res.status(400).json({ message: 'Invalid color' });
-    // }
+    if (!colors.includes(color)) {
+        return res.status(400).json({ message: 'Invalid color' });
+    }
 
     const sanitizedName = xss(name.trim());
     const sanitizedMessage = xss(message.trim());
 
     const newPost = {
-        id: Date.now(),
-        name: sanitizedName + Math.random().toString(36).substring(2, 15),
+        id: Date.now() + Math.random().toString(36).substring(2, 15),
+        name: sanitizedName,
         message: sanitizedMessage,
         link: link ? xss(link.trim()) : '',
         date: new Date().toISOString(),
@@ -45,9 +74,25 @@ const add_post = async (req, res) => {
         hasapproved: false
     };
 
-    console.log('New post data:', newPost);
+    try {
+        await enqueueWrite(async () => {
+            let posts = [];
+            try {
+                const data = await fs.readFile(filePath, 'utf8');
+                posts = JSON.parse(data);
+            } catch (err) {
+                if (err.code !== 'ENOENT') throw err;
+            }
 
+            posts.push(newPost);
+            await fs.writeFile(filePath, JSON.stringify(posts, null, 2), 'utf8');
+        });
 
-}
+        res.status(201).json({ message: 'Post added successfully', post: newPost });
+    } catch (err) {
+        console.error('Error writing to file:', err);
+        res.status(500).json({ message: 'Failed to save post' });
+    }
+};
 
-module.exports = add_post
+module.exports = add_post;

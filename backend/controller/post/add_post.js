@@ -1,11 +1,36 @@
 const fs = require('fs').promises;
 const path = require('path');
 const xss = require('xss');
+const axios = require('axios');
 
 const filePath = path.join(__dirname, '../../data.json');
 
 let writeInProgress = false;
 const writeQueue = [];
+
+function extractYouTubeId(url) {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
+async function getYouTubeVideoInfo(videoId) {
+  try {
+    const response = await axios.get(
+      `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`
+    );
+    return {
+      videoTitle: response.data.title,
+      videoThumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+    };
+  } catch (error) {
+    console.error('YouTube oEmbed API error:', error.message);
+    return {
+      videoTitle: null,
+      videoThumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+    };
+  }
+}
 
 const enqueueWrite = async (operation) => {
     return new Promise((resolve, reject) => {
@@ -16,10 +41,8 @@ const enqueueWrite = async (operation) => {
 
 const processQueue = async () => {
     if (writeInProgress || writeQueue.length === 0) return;
-
     writeInProgress = true;
     const { operation, resolve, reject } = writeQueue.shift();
-
     try {
         const result = await operation();
         resolve(result);
@@ -42,7 +65,7 @@ const add_post = async (req, res) => {
         return res.status(400).json({ message: 'Invalid input type' });
     }
 
-    if (name.length > 30 || message.length > 120) {
+    if (name.length > 20 || message.length > 120) {
         return res.status(400).json({ message: 'Input exceeds maximum length' });
     }
 
@@ -64,6 +87,22 @@ const add_post = async (req, res) => {
     const sanitizedName = xss(name.trim());
     const sanitizedMessage = xss(message.trim());
 
+    let videoTitle = null;
+    let videoThumbnail = null;
+
+    if (link && link.includes('youtu')) {
+        try {
+            const videoId = extractYouTubeId(link);
+            if (videoId) {
+                const videoInfo = await getYouTubeVideoInfo(videoId);
+                videoTitle = videoInfo.videoTitle;
+                videoThumbnail = videoInfo.videoThumbnail;
+            }
+        } catch (error) {
+            console.error('Error fetching YouTube info:', error);
+        }
+    }
+
     const newPost = {
         id: Date.now() + Math.random().toString(36).substring(2, 15),
         name: sanitizedName,
@@ -71,7 +110,9 @@ const add_post = async (req, res) => {
         link: link ? xss(link.trim()) : '',
         date: new Date().toISOString(),
         color: color.trim(),
-        hasapproved: false
+        hasapproved: false,
+        videoTitle, 
+        videoThumbnail 
     };
 
     try {
@@ -88,7 +129,10 @@ const add_post = async (req, res) => {
             await fs.writeFile(filePath, JSON.stringify(posts, null, 2), 'utf8');
         });
 
-        res.status(201).json({ message: 'Post added successfully', post: newPost });
+        res.status(201).json({ 
+            message: 'Post added successfully', 
+            post: newPost 
+        });
     } catch (err) {
         console.error('Error writing to file:', err);
         res.status(500).json({ message: 'Failed to save post' });

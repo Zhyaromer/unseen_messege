@@ -3,6 +3,7 @@ import "../index.css";
 import Main_Card from "../component/Main_Card.jsx";
 import Nav from "../component/Nav.jsx";
 import Footer from "../component/Footer.jsx";
+import axios from 'axios';
 
 export default function Home() {
     const [messages, setMessages] = useState([]);
@@ -10,38 +11,24 @@ export default function Home() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const mockCards = [
-            {
-                id: 1,
-                name: "سارا",
-                message: "هیوادارم ڕۆژێکت پڕ بێت لە په‌یوه‌ندی و خۆشی! تۆ کەسێکی تایبه‌تیت."
-            },
-            {
-                id: 2,
-                name: "عەلی",
-                message: "سوپاس بۆ هه‌موو یارمه‌تییه‌کانی تۆ. بێ تۆ ئه‌م سه‌رکه‌وتنه‌م نه‌ده‌کرد."
-            },
-            {
-                id: 3,
-                name: "هێمن",
-                message: "به‌ختێکی زۆر بۆت له‌ ژیاندا! هه‌رگیز وه‌ستا مه‌که‌ له‌ ئاره‌زووه‌کانی خۆت."
-            },
-            {
-                id: 4,
-                name: "ڕێزان",
-                message: "تۆ وه‌ک ئه‌ستێره‌یه‌ک له‌ تاریکیدا دره‌خشێنیت. مه‌به‌ستی منی ڕوونکردنه‌وه‌."
-            },
-            {
-                id: 5,
-                name: "ڤیان",
-                message: "پێغه‌مبه‌رێک وتی: 'خوا به‌ چاکه‌کانی خه‌ڵکی دادپه‌روه‌ر ده‌بێت'. تۆ نموونه‌ی ئه‌م په‌یامه‌ی."
-            }
-        ];
+        const fetchMessages = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/post/get_all_posts');
+                const data = response.data;
 
-        setTimeout(() => {
-            setMessages(mockCards);
-            setIsLoading(false);
-        }, 1000);
+                if (Array.isArray(data)) {
+                    setMessages(data);
+                } else {
+                    console.error('Unexpected data format:', data);
+                }
+            } catch (error) {
+                console.error('Error fetching messages:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchMessages();
     }, []);
 
     const filteredMessages = messages.filter(message =>
@@ -71,6 +58,30 @@ export default function Home() {
             <Nav tab='unsent' />
 
             <main className="container mx-auto px-4 py-8 relative z-0">
+
+                <div className='flex justify-center items-center mb-8'>
+                    <div dir="rtl">
+                        <div className="w-80 h-80 border-4 border-black text-lg flex flex-col">
+                            <div className="flex justify-between items-center px-3 bg-white">
+                                <div className="flex items-center gap-2">
+                                    <span className="font-bold">بۆ : </span>
+                                </div>
+                                <div className="flex items-center ">
+                                    <img className="w-12 h-12" src="https://www.svgrepo.com/show/37899/email-black-envelope-back.svg" alt="" />
+                                </div>
+                            </div>
+
+                            <div className="bg-white flex-grow relative">
+                                <img className='absolute w-full h-full object-cover' src="photo_2025-06-06_00-28-02.jpg" alt="" />
+                            </div>
+
+                            <div className="flex justify-center items-center p-3 bg-white font-bold">
+                                <span className="text-gray-600">لیمینا#</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="max-w-2xl mx-auto mb-12">
                     <div className="relative">
                         <input
@@ -96,7 +107,10 @@ export default function Home() {
                 <div className="flex justify-center">
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
                         {filteredMessages.map(card => (
-                            <Main_Card key={card.id} id={card.id} name={card.name} message={card.message} />
+                            <div>
+                                <Main_Card key={card.id} id={card.id} name={card.name} message={card.message} videoTitle={card.videoTitle} videoThumbnail={card.videoThumbnail} videoUrl={card.link} />
+                                <h1>{filteredMessages.videoTitle}</h1>
+                            </div>
                         ))}
                     </div>
                 </div>

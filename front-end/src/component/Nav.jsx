@@ -74,20 +74,20 @@ export default function Nav({tab}) {
                     <div className="md:hidden pb-4 border-t border-pink-100 mt-4 pt-4">
                         <div className="flex flex-col space-y-2">
                             <button
-                                onClick={() => { setActiveTab('unsent'); setIsMobileMenuOpen(false); }}
-                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all text-left ${activeTab === 'unsent' ? 'bg-pink-500 text-white' : 'text-pink-600 hover:bg-pink-100/50'}`}
+                                onClick={() => { handleTabChange('unsent'); setIsMobileMenuOpen(false); }}
+                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all text-right ${activeTab === 'unsent' ? 'bg-pink-500 text-white' : 'text-pink-600 hover:bg-pink-100/50'}`}
                             >
                                 نامەکان
                             </button>
                             <button
-                                onClick={() => { setActiveTab('send'); setIsMobileMenuOpen(false); }}
-                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all text-left ${activeTab === 'send' ? 'bg-pink-500 text-white' : 'text-pink-600 hover:bg-pink-100/50'}`}
+                                onClick={() => { handleTabChange('send'); setIsMobileMenuOpen(false); }}
+                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all text-right ${activeTab === 'send' ? 'bg-pink-500 text-white' : 'text-pink-600 hover:bg-pink-100/50'}`}
                             >
                                 ناردنی نامە
                             </button>
                             <button
-                                onClick={() => { setActiveTab('about'); setIsMobileMenuOpen(false); }}
-                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all text-left ${activeTab === 'about' ? 'bg-pink-500 text-white' : 'text-pink-600 hover:bg-pink-100/50'}`}
+                                onClick={() => { handleTabChange('about'); setIsMobileMenuOpen(false); }}
+                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all text-right ${activeTab === 'about' ? 'bg-pink-500 text-white' : 'text-pink-600 hover:bg-pink-100/50'}`}
                             >
                                 دەربارەی ئێمە
                             </button>

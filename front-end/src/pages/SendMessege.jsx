@@ -2,6 +2,7 @@ import { useState } from "react";
 import Nav from "../component/Nav.jsx";
 import Footer from "../component/Footer.jsx";
 import { FaInstagram, FaTiktok } from "react-icons/fa";
+import axios from "axios";
 
 export default function SendMessage() {
     const [name, setName] = useState("");
@@ -20,25 +21,43 @@ export default function SendMessage() {
         "#f97316", "#ea580c", "#fde047", "#facc15", "#eab308"
     ];
 
-    const handleSend = () => {
-        if (name.trim() && message.trim()) {
-            console.log({
-                name: name.trim(),
-                message: message.trim(),
-                musicLink: musicLink.trim()
-            });
-
+    const handleSend = async () => {
+        if (name.trim() && message.trim() && selectedColor) {
+            
             if (musicLink && !isValidYouTubeUrl(musicLink)) {
                 alert("تکایە بەستەری یوتیوبی دروست بنووسە");
                 return;
             }
+            console.log("Sending message...2");
+            if (musicLink && !musicLink.startsWith("https://")) {
+                alert("تکایە بەستەری یوتیوبی بە شێوەی دروست بنووسە (https://...)");
+                return;
+            }
+            if (name.length > 20 || message.length > 120) {
+                alert("ناو یان پەیامەکە زۆر درێژە، تکایە کەمتر بنووسە");
+                return;
+            }
 
-            alert("پەیامەکەت نێردرا! (Message sent!)");
+            const data = {
+                name,
+                message,
+                link : musicLink,
+                color: selectedColor,
+            };
 
-            setName("");
-            setMessage("");
-            setMusicLink("");
-            setSelectedColor("#4d2d2d");
+            try {
+                const res = await axios.post("http://localhost:3000/api/post/add_post", data);
+                if (res.status === 201) {
+                    alert("پەیامەکەت نێردرا!");
+                    setName("");
+                    setMessage("");
+                    setMusicLink("");
+                    setSelectedColor("#4d2d2d");
+                }
+            } catch (error) {
+                console.error("Error sending message:", error);
+                alert("هەڵەیەک ڕوویدا، تکایە دووبارە هەوڵ بدە");
+            }
         } else {
             alert("تکایە ناو و پەیامەکە پڕ بکەرەوە ");
         }

@@ -23,7 +23,19 @@ const get_all_posts = async (req, res) => {
       return res.status(404).json({ message: 'No posts found' });
     }
 
-    res.status(200).json(posts);
+    const postData = approvedPost.map(post => {
+      return {
+        id: post.id,
+        name: post.name,
+        message: post.message,
+        hasapproved: post.hasapproved,
+        link : post.link,
+        videoTitle : post.videoTitle || null,
+        videoThumbnail : post.videoThumbnail || null
+      };
+    });
+
+    res.status(200).json(postData);
   } catch (error) {
     console.error('Error fetching posts:', error);
     res.status(500).json({ message: 'Internal server error' });

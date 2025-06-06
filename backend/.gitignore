@@ -25,4 +25,3 @@ dist-ssr
 .env
 admin.json
 data.db
-db.js

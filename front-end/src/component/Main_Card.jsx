@@ -33,7 +33,7 @@ export default function Main_Card({ id, name, message, videoTitle, videoThumbnai
             <div className="md:w-96 h-[470px] border-4 border-black text-lg flex flex-col">
                 <div className="flex justify-between items-center px-3 py-0 bg-white">
                     <div className="flex items-center gap-2">
-                        <span className="font-bold">بۆ : {name}</span>
+                        <span className="font-bold"><span className="font-custome">بۆ</span> : {name}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <img 

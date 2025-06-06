@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+@font-face {
+    font-family: rudaw;
+    src: url('./assets/fonts/rudawregular.ttf') format('truetype');
+}
+
+@theme {
+    --font-custome: rudaw
+}

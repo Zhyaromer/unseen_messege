@@ -30,9 +30,10 @@ const get_specified_message = async (req, res) => {
 
         post.hasapproved = Boolean(post.hasapproved);
 
+        console.log('Post retrieved:', post);
+
         res.status(200).json(post);
     } catch (error) {
-        console.error('Error fetching specified post:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 };

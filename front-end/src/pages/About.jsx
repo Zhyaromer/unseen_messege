@@ -24,10 +24,10 @@ export default function About() {
                         <span className="font-bold text-sm">پەیامەکەت لەم پلاتفۆرمانە ببینە</span>
                     </div>
                     <div className="flex gap-3">
-                        <a href="https://instagram.com/yourinstagram" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.instagram.com/limiinaa_?igsh=dXo4ZndhbG54c2Fk&utm_source=qr" target="_blank" rel="noopener noreferrer">
                             <FaInstagram className="text-2xl text-pink-600 hover:text-pink-800" />
                         </a>
-                        <a href="https://tiktok.com/@yourtiktok" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.tiktok.com/@liminaa_?_t=ZS-8wxsBM6fHB1&_r=1" target="_blank" rel="noopener noreferrer">
                             <FaTiktok className="text-2xl text-black hover:text-gray-700" />
                         </a>
                     </div>

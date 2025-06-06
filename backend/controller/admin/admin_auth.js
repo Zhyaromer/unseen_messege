@@ -36,7 +36,6 @@ const adminLogin = async (req, res) => {
       }
     );
   } catch (error) {
-    console.error('Error in admin login:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };

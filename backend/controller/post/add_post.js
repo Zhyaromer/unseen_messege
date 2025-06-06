@@ -30,7 +30,7 @@ const add_post = async (req, res) => {
     const { name, message, link, color } = req.body;
 
     if (!name || !message || !color) {
-        return res.status(400).json({ message: 'All fields are required' });
+        return res.status(400).json({ message: 'هەموو زانیاریەکان پڕبکەوە' });
     }
 
     if (typeof name !== 'string' || typeof message !== 'string' || typeof link !== 'string' || typeof color !== 'string') {
@@ -71,7 +71,7 @@ const add_post = async (req, res) => {
                 videoThumbnail = videoInfo.videoThumbnail;
             }
         } catch (error) {
-            console.error('Error fetching YouTube info:', error);
+            return res.status(500).json({ message: 'هەڵەیەک ڕوویدە لە ڤیدیۆی یوتیوبەکە تکایە هەوڵ  بدەوە' });
         }
     }
 
@@ -111,11 +111,9 @@ const add_post = async (req, res) => {
         });
 
         res.status(201).json({ 
-            message: 'Post added successfully', 
-            post: newPost 
+            message: 'Post added successfully'
         });
     } catch (err) {
-        console.error('Error writing to database:', err);
         res.status(500).json({ message: 'Failed to save post' });
     }
 };

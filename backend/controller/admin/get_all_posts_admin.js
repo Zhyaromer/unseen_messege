@@ -36,7 +36,6 @@ const get_all_posts_admin = async (req, res) => {
 
     res.status(200).json(postData);
   } catch (error) {
-    console.error('Error fetching unapproved posts:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };

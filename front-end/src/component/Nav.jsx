@@ -47,7 +47,7 @@ export default function Nav({tab}) {
                     </div>
 
                     <div className="flex items-center space-x-2">
-                        <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-pink-500 font-serif">
+                        <h1 onClick={() => handleTabChange('unsent')} className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-pink-500 font-serif">
                             لیمینا
                         </h1>
                     </div>

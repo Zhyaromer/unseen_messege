@@ -29,9 +29,9 @@ export default function AdminPage() {
             } catch (error) {
                 if (error.response?.status === 401) {
                     sessionStorage.removeItem('adminToken');
-                    navigate('/admin-login');
+                    navigate('/admin/admin-login/login');
                 }
-                setError('Failed to load messages');
+                setError('هیچ پەیامێک نیە');
             } finally {
                 setLoading(false);
             }
@@ -42,7 +42,7 @@ export default function AdminPage() {
 
     const handleLogout = () => {
         sessionStorage.removeItem('adminToken');
-        navigate('/admin-login');
+        navigate('/admin/admin-login/login');
     };
 
     const handleAccept = async (id) => {
@@ -50,14 +50,14 @@ export default function AdminPage() {
             const res = await authAxios.post(`/api/admin/approve_message/${id}`);
 
             if (res.status === 200) {
-                alert(`Message with ID ${id} accepted`);
+                alert(`پەیامەکە بە سەرکەوتوویی قبوڵکرا`);
                 setSelectedMessage(null);
                 setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== id));
             }
         } catch (error) {
             if (error.response?.status === 401) {
                 sessionStorage.removeItem('adminToken');
-                navigate('/admin-login');
+                navigate('/admin/admin-login/login');
             }
             alert(`Failed to accept message with ID ${id}`);
         }
@@ -68,7 +68,7 @@ export default function AdminPage() {
             const res = await authAxios.delete(`/api/admin/delete_message/${id}`);
 
             if (res.status === 200) {
-                alert(`Message with ID ${id} deleted`);
+                alert(`پەیامەکە بە سڕایەوە`);
                 setSelectedMessage(null);
                 setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== id));
             }
@@ -76,7 +76,7 @@ export default function AdminPage() {
         } catch (error) {
             if (error.response?.status === 401) {
                 sessionStorage.removeItem('adminToken');
-                navigate('/admin-login');
+                navigate('/admin/admin-login/login');
             }
             alert(`Failed to reject message with ID ${id}`);
         }

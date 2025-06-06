@@ -36,7 +36,6 @@ const get_all_posts = async (req, res) => {
 
     res.status(200).json(postData);
   } catch (error) {
-    console.error('Error fetching posts:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };

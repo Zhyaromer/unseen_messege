@@ -20,10 +20,10 @@ export default function GetPostByID() {
         const fetchMessage = async () => {
             try {
                 const response = await axios.get(`http://localhost:3000/api/post/get_specified_messege?id=${id}`);
-                if (response.data.length == 0 || !response.data[0] || response.status !== 200) {
+                if (response.data.length == 0 || !response.data || response.status !== 200) {
                     return navgation.navigate('/');
                 }
-                setMessage(response.data[0]);
+                setMessage(response.data);
             } catch (error) {
                 alert('Failed to fetch message');
             }
@@ -37,9 +37,7 @@ export default function GetPostByID() {
             <Nav />
             <div className='container mx-auto px-4 py-8 relative z-0'>
                 <div className="max-w-md mx-auto">
-                    <div className="flex flex-col items-center justify-center mb-8">
-                        <Main_Card id={id} name={message ? message.name : ''} message={message ? message.message : ''} videoTitle={message ? message.videoTitle : ''} videoThumbnail={message ? message.videoThumbnail : ''} videoUrl={message ? message.link : ''} />
-                    </div>
+                        <Main_Card id={id} name={message ? message.name : ''} message={message ? message.message : ''} videoTitle={message ? message.videoTitle : ''} videoThumbnail={message ? message.videoThumbnail : ''} videoUrl={message ? message.link : ''} color={message ? message.color : ''} />
 
                     <div dir='rtl' className="flex flex-col w-full gap-2">
                         <div>
@@ -64,10 +62,10 @@ export default function GetPostByID() {
                             <span className="font-bold text-sm">پەیامەکەت لەم پلاتفۆرمانە ببینە</span>
                         </div>
                         <div className="flex gap-3">
-                            <a href="https://instagram.com/yourinstagram" target="_blank" rel="noopener noreferrer">
+                            <a href="https://www.instagram.com/limiinaa_?igsh=dXo4ZndhbG54c2Fk&utm_source=qr" target="_blank" rel="noopener noreferrer">
                                 <FaInstagram className="text-2xl text-pink-600 hover:text-pink-800" />
                             </a>
-                            <a href="https://tiktok.com/@yourtiktok" target="_blank" rel="noopener noreferrer">
+                            <a href="https://www.tiktok.com/@liminaa_?_t=ZS-8wxsBM6fHB1&_r=1" target="_blank" rel="noopener noreferrer">
                                 <FaTiktok className="text-2xl text-black hover:text-gray-700" />
                             </a>
                         </div>

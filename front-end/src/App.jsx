@@ -37,9 +37,9 @@ function App() {
         <Route path="/send-message" element={<SendMessege />} />
         <Route path="/about" element={<About />} />
         <Route path="/messege/:id" element={<GetPostByID />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin/admin-login/login" element={<AdminLogin />} />
         <Route 
-          path="/admin" 
+          path="/admin/admin/dashboard" 
           element={
             <ProtectedRoute>
               <AdminPage />

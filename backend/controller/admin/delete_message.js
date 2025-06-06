@@ -26,10 +26,8 @@ const delete_message = async (req, res) => {
             return res.status(404).json({ message: 'Post not found' });
         }
 
-        return res.status(200).json({ message: 'Post deleted successfully' });
+        return res.status(200).json({ message: 'نامەکە سرایەوە' });
     } catch (error) {
-        console.error('Error deleting post:', error);
-
         if (error.code === 'SQLITE_BUSY') {
             return res.status(429).json({ message: 'System busy, please try again later' });
         }

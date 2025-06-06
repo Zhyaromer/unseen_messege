@@ -103,7 +103,7 @@ export default function Home() {
                 </div>
 
                 <div className='flex justify-center items-center pb-4'>
-                    <h2 className="text-xl md:text-2xl font-bold text-pink-600/80 text-center">کۆمەڵێک نامەی پێنەنێردراو بۆ یەکەم خۆشەویستەکان</h2>
+                    <h2 className="text-xl md:text-2xl font-bold text-pink-600/80 text-center">کۆمەڵێک نامەی نەنێردراو بۆ خۆشەویستەکان</h2>
                 </div>
 
                 <div className="text-center mb-12">
@@ -112,17 +112,14 @@ export default function Home() {
                     </p>
                 </div>
 
-                <div className="flex justify-center">
-                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-                        {filteredMessages.map(card => (
-                            <div>
-                                <Main_Card key={card.id} id={card.id} name={card.name} message={card.message} videoTitle={card.videoTitle} videoThumbnail={card.videoThumbnail} videoUrl={card.link} />
-                                <h1>{filteredMessages.videoTitle}</h1>
-                            </div>
-                        ))}
-                    </div>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+                    {filteredMessages.map(card => (
+                        <div>
+                            <Main_Card key={card.id} id={card.id} name={card.name} message={card.message} videoTitle={card.videoTitle} videoThumbnail={card.videoThumbnail} videoUrl={card.link} color={card.color} />
+                            <h1>{filteredMessages.videoTitle}</h1>
+                        </div>
+                    ))}
                 </div>
-
             </main>
 
             <Footer />

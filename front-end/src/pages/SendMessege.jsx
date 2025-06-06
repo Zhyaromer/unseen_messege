@@ -21,6 +21,18 @@ export default function SendMessage() {
         "#f97316", "#ea580c", "#fde047", "#facc15", "#eab308"
     ];
 
+    const getTextColor = (bgColor) => {
+        const r = parseInt(bgColor.substr(1, 2), 16);
+        const g = parseInt(bgColor.substr(3, 2), 16);
+        const b = parseInt(bgColor.substr(5, 2), 16);
+        
+        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+        
+        return luminance > 0.5 ? 'black' : 'white';
+    };
+
+    const textColor = getTextColor(selectedColor);
+
     const handleSend = async () => {
         if (name.trim() && message.trim() && selectedColor) {
             
@@ -103,7 +115,9 @@ export default function SendMessage() {
                                     onChange={(e) => setMessage(e.target.value)}
                                     maxLength={190}
                                     placeholder="پەیامەکەت لێرە بنووسە..."
-                                    className="text-black font-semibold w-full h-full bg-transparent border-none outline-none resize-none placeholder-gray-400"
+                                    className={`font-semibold w-full h-full bg-transparent border-none outline-none resize-none placeholder-gray-400 ${
+                                        textColor === 'white' ? 'text-white placeholder-gray-200' : 'text-black placeholder-gray-400'
+                                    }`}
                                     dir="rtl"
                                 />
                             </div>

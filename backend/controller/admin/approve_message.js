@@ -56,13 +56,11 @@ const approve_message = async (req, res) => {
         updatedPost.hasapproved = Boolean(updatedPost.hasapproved);
 
         return res.status(200).json({ 
-            message: 'Post approved successfully', 
+            message: 'نامەکە وەرگیرا', 
             post: updatedPost 
         });
 
     } catch (error) {
-        console.error('Error approving post:', error);
-        
         if (error.code === 'SQLITE_BUSY') {
             return res.status(429).json({ message: 'System busy, please try again later' });
         }

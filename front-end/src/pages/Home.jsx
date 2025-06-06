@@ -13,7 +13,7 @@ export default function Home() {
     useEffect(() => {
         const fetchMessages = async () => {
             try {
-                const response = await axios.get('https://unseen-messege.onrender.com/api/post/get_all_posts');
+                const response = await axios.get('https://unseen-messege-1.onrender.com/api/post/get_all_posts');
                 const data = response.data;
 
                 if (Array.isArray(data)) {

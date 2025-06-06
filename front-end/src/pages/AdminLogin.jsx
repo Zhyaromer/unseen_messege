@@ -23,7 +23,7 @@ export default function AdminLogin() {
     setLoading(true);
 
     try {
-      const res = await axios.post('https://unseen-messege.onrender.com/api/admin/login', {
+      const res = await axios.post('https://unseen-messege-1.onrender.com/api/admin/login', {
         username,
         password
       });

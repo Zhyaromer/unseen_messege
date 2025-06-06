@@ -10,7 +10,7 @@ export default function AdminPage() {
     const navigate = useNavigate();
 
     const authAxios = axios.create({
-        baseURL: 'https://unseen-messege.onrender.com',
+        baseURL: 'https://unseen-messege-1.onrender.com',
         headers: {
             'x-auth-token': sessionStorage.getItem('adminToken')
         }

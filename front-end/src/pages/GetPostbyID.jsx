@@ -19,7 +19,7 @@ export default function GetPostByID() {
     useEffect(() => {
         const fetchMessage = async () => {
             try {
-                const response = await axios.get(`https://unseen-messege.onrender.com/api/post/get_specified_messege?id=${id}`);
+                const response = await axios.get(`https://unseen-messege-1.onrender.com/api/post/get_specified_messege?id=${id}`);
                 if (response.data.length == 0 || !response.data || response.status !== 200) {
                     return navgation.navigate('/');
                 }

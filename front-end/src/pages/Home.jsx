@@ -70,17 +70,20 @@ export default function Home() {
                 <div className='flex justify-center items-center mb-8'>
                     <div dir="rtl">
                         <div className="w-80 h-80 border-4 border-black text-lg flex flex-col">
-                            <div className="flex justify-between items-center px-3 bg-white">
-                                <div className="flex items-center gap-2">
-                                    <span className="font-bold">بۆ : </span>
-                                </div>
+                            <div className="flex justify-end items-center px-3 bg-white">
                                 <div className="flex items-center ">
                                     <img className="w-12 h-12" src="https://www.svgrepo.com/show/37899/email-black-envelope-back.svg" alt="" />
                                 </div>
                             </div>
 
-                            <div className="bg-white flex-grow relative">
-                                <img className='absolute w-full h-full object-cover' src="photo_2025-06-06_00-28-02.jpg" alt="" />
+                            <div className="bg-white flex-grow flex flex-col justify-center items-center gap-4 relative">
+                                <h1 className='font-bold text-2xl'>Limina</h1>
+                                <div className='flex flex-row-reverse gap-1 '>
+                                    <span className="text-sm"> (.n) </span>
+                                    <p className="text-sm"> The smallest feeling you can notice </p>
+                                </div>
+                                <h1 className='font-bold text-2xl'>لیمینا</h1>
+                                <p className='text-sm'>بچوکترین هەست کە دەکرێ سەرنجی بدەیت.</p>
                             </div>
 
                             <div className="flex justify-center items-center p-3 bg-white font-bold">
@@ -100,10 +103,6 @@ export default function Home() {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                </div>
-
-                <div className='flex justify-center items-center pb-4'>
-                    <h2 className="text-xl md:text-2xl font-bold text-pink-600/80 text-center">کۆمەڵێک نامەی نەنێردراو بۆ خۆشەویستەکان</h2>
                 </div>
 
                 <div className="text-center mb-12">

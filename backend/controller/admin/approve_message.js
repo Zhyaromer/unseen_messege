@@ -26,7 +26,7 @@ const approve_message = async (req, res) => {
     }
 
     const { data, error: updateError } = await supabase
-      .from('posts')
+      .from('messeges')
       .update({ hasapproved: true })
       .eq('id', sanitizedId);
 

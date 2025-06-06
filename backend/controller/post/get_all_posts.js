@@ -8,6 +8,8 @@ const get_all_posts = async (req, res) => {
       .eq('hasapproved', true)
       .order('date', { ascending: false });
 
+      console.log(approvedPosts);
+
     if (error) throw error;
 
     if (!approvedPosts || approvedPosts.length === 0) {

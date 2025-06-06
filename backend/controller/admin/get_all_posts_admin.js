@@ -3,7 +3,7 @@ const supabase = require('../../supabaseClient');
 const get_all_posts_admin = async (req, res) => {
   try {
     const { data: unapprovedPosts, error } = await supabase
-      .from('posts')
+      .from('messeges')
       .select('id, name, message, link, date, color, hasapproved, videoTitle, videoThumbnail')
       .eq('hasapproved', 0)
       .order('date', { ascending: false });

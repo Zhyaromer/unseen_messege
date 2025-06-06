@@ -12,7 +12,7 @@ const delete_message = async (req, res) => {
 
   try {
     const { data, error } = await supabase
-      .from('posts')
+      .from('messeges')
       .delete()
       .eq('id', sanitizedId)
       .select();

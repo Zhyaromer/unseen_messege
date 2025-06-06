@@ -21,7 +21,7 @@ const adminLogin = async (req, res) => {
     const payload = {
       user: {
         id: admin.id,
-        username: admin.username
+        username: admin.name
       }
     };
 

@@ -59,7 +59,7 @@ export default function SendMessage() {
             };
 
             try {
-                const res = await axios.post("http://localhost:3000/api/post/add_post", data);
+                const res = await axios.post("https://unseen-messege.onrender.com/api/post/add_post", data);
                 if (res.status === 201) {
                     alert("پەیامەکەت نێردرا!");
                     setName("");

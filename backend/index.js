@@ -16,6 +16,10 @@ app.use(cors(
 ));
 app.use(bodyParser.json());
 
+app.get('/awake-server', (_req, res) => {
+    res.sendStatus(200);
+});
+
 app.use('/api/post', postRoute);
 app.use('/api/admin', adminroute);
 

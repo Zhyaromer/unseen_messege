@@ -1,5 +1,4 @@
-const fs = require('fs').promises;
-const path = require('path');
+const supabase = require('../../supabaseClient');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../../middleware/authMiddleware');
 
@@ -7,15 +6,15 @@ const adminLogin = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const filePath = path.join(__dirname, '../../admin.json');
-    const data = await fs.readFile(filePath, 'utf-8');
-    const admins = JSON.parse(data);
+    const { data: admin, error } = await supabase
+      .from('users')
+      .select('id, name, password')
+      .eq('name', username)
+      .eq('password', password) 
+      .limit(1)
+      .single();
 
-    const admin = admins.find(
-      (admin) => admin.username === username && admin.password === password
-    );
-
-    if (!admin) {
+    if (error || !admin) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
@@ -29,7 +28,7 @@ const adminLogin = async (req, res) => {
     jwt.sign(
       payload,
       JWT_SECRET,
-      { expiresIn: '1h' }, 
+      { expiresIn: '1h' },
       (err, token) => {
         if (err) throw err;
         res.json({ token });

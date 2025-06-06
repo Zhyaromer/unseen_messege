@@ -1,29 +1,29 @@
-const db = require('../../db'); 
+const supabase = require('../../supabaseClient');
 const xss = require('xss');
 const axios = require('axios');
 
 function extractYouTubeId(url) {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : null;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
 }
 
 async function getYouTubeVideoInfo(videoId) {
-  try {
-    const response = await axios.get(
-      `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`
-    );
-    return {
-      videoTitle: response.data.title,
-      videoThumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
-    };
-  } catch (error) {
-    console.error('YouTube oEmbed API error:', error.message);
-    return {
-      videoTitle: null,
-      videoThumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
-    };
-  }
+    try {
+        const response = await axios.get(
+            `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`
+        );
+        return {
+            videoTitle: response.data.title,
+            videoThumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+        };
+    } catch (error) {
+        console.error('YouTube oEmbed API error:', error.message);
+        return {
+            videoTitle: null,
+            videoThumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+        };
+    }
 }
 
 const add_post = async (req, res) => {
@@ -76,41 +76,24 @@ const add_post = async (req, res) => {
     }
 
     const newPost = {
-        id: Date.now() + Math.random().toString(36).substring(2, 15),
         name: sanitizedName,
         message: sanitizedMessage,
         link: link ? xss(link.trim()) : '',
-        date: new Date().toISOString(),
         color: color.trim(),
-        hasapproved: 0, 
-        videoTitle, 
-        videoThumbnail 
+        hasapproved: false,
+        videoTitle,
+        videoThumbnail
     };
 
     try {
-        await new Promise((resolve, reject) => {
-            db.run(
-                `INSERT INTO posts (id, name, message, link, date, color, hasapproved, videoTitle, videoThumbnail)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                [
-                    newPost.id,
-                    newPost.name,
-                    newPost.message,
-                    newPost.link,
-                    newPost.date,
-                    newPost.color,
-                    newPost.hasapproved,
-                    newPost.videoTitle,
-                    newPost.videoThumbnail
-                ],
-                function(err) {
-                    if (err) return reject(err);
-                    resolve();
-                }
-            );
-        });
+        const { error } = await supabase.from('messeges').insert([newPost]);
 
-        res.status(201).json({ 
+        if (error) {
+            console.error('Supabase insert error:', error.message);
+            return res.status(500).json({ message: 'Failed to save post' });
+        }
+
+        res.status(201).json({
             message: 'Post added successfully'
         });
     } catch (err) {
